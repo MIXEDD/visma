@@ -1,13 +1,11 @@
 import { INITIAL_STATE, SET_NODE } from './constants';
-import { TreeNode } from './types';
+import { TreeData } from './types';
 
-interface State extends TreeNode {
-    subNodes?: Array<TreeNode>;
-}
+export interface TreeState extends TreeData {}
 
-const initialState: State = INITIAL_STATE;
+const initialState: TreeState = INITIAL_STATE;
 
-export function treeReducer(state: State = initialState, action: any) {
+export function treeReducer(state: TreeState = initialState, action: any) {
     switch (action.type) {
         case SET_NODE: {
             state = action.payload;

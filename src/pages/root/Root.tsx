@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 
 import InputField from '../../atoms/input-field/InputField';
 import Typography, { ElementType } from '../../atoms/typography/Typography';
@@ -13,10 +14,12 @@ import {
     isRequiredValueFilled,
 } from '../../utils/validations';
 import Selector from '../../atoms/selector/Selector';
+import { RootReducer } from '../../store';
+import { TreeData } from '../../store/tree/types';
 
 import styles from './Root.module.scss';
 
-const addFullNameValidation = (value: string) => {
+const addFullNameValidation = (value: string, treeData: TreeData) => {
     if (!value) {
         return [];
     }
@@ -25,7 +28,7 @@ const addFullNameValidation = (value: string) => {
         isCorrectFullNameLength,
         isFullNameNoMoreThanFourWords,
         isFullNameStartsWithCapitalLetter,
-        isFullNameUnique([]),
+        isFullNameUnique(treeData),
     ];
 };
 
@@ -42,6 +45,7 @@ const Root: React.FC = () => {
     const [email, setEmail] = useState<string>('');
     const [coach, setCoach] = useState<string>('');
     const [isFormError, setIsFormError] = useState<boolean>(true);
+    const treeState = useSelector((state: RootReducer) => state.tree);
 
     const onChangeFullName = (value: string) => {
         setFullname(value);
@@ -68,7 +72,7 @@ const Root: React.FC = () => {
                 validations={{
                     validationFunctions: [
                         isRequiredValueFilled,
-                        ...addFullNameValidation(fullName),
+                        ...addFullNameValidation(fullName, treeState),
                     ],
                     setFormError: setIsFormError,
                 }}
