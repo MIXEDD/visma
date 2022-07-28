@@ -27,6 +27,10 @@ const InputField: React.FC<Props> = React.memo((props) => {
     const [errors, setErrors] = useState<string[]>([]);
 
     const onChange = (event: React.FormEvent<HTMLInputElement>) => {
+        if (errors.length) {
+            setErrors([]);
+        }
+
         if (format) {
             onChangeInput(format(event.currentTarget.value));
 

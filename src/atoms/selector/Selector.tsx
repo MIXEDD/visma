@@ -21,6 +21,10 @@ const Selector: React.FC<Props> = (props) => {
     const [errors, setErrors] = useState<string[]>([]);
 
     const onChangeValue = (event: ChangeEvent<HTMLSelectElement>) => {
+        if (errors.length) {
+            setErrors([]);
+        }
+
         onChange(event.target.value);
     };
 
