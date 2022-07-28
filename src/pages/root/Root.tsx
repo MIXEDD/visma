@@ -103,11 +103,17 @@ const Root: React.FC = () => {
             <Typography text="Create form" elementType={ElementType.H1} />
             <InputField
                 label="Full name*:"
+                value={fullName}
                 onChangeInput={onChangeFullName}
                 format={formatSpecialCharactersAndNumbers}
                 errors={fullNameErrors}
             />
-            <InputField label="Email*:" onChangeInput={onSetEmail} errors={emailErrors} />
+            <InputField
+                label="Email*:"
+                value={email}
+                onChangeInput={onSetEmail}
+                errors={emailErrors}
+            />
             <Selector
                 data={[{ value: '', label: '' }, ...coachesOptions]}
                 onChange={onSetCoach}
