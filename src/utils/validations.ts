@@ -32,16 +32,16 @@ export const isFullNameStartsWithCapitalLetter = (value: string) => {
     return true;
 };
 
-export const isFullNameUnique = (value: string, data: any) => {
+export const isFullNameUnique = (data: any) => (value: string) => {
     return true;
 };
 
-export const isEmailValid = (value: string, emailValue: string) => {
+export const isEmailValid = (fullname: string) => (emailValue: string) => {
     let email: string = '';
-    const words = value.trim().split(' ');
+    const words = fullname.trim().split(' ');
 
     words.forEach((word, index) => {
-        email += word;
+        email += word.toLowerCase();
 
         if (index < words.length - 1) {
             email += '.';
