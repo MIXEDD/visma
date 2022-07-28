@@ -16,7 +16,7 @@ import {
 const Root: React.FC = () => {
     const [fullname, setFullname] = useState<string>('');
     const [email, setEmail] = useState<string>('');
-    const [isFormError, setIsFormError] = useState<boolean>(false);
+    const [isFormError, setIsFormError] = useState<boolean>(true);
 
     const onChangeFullName = (value: string) => {
         setFullname(value);
@@ -33,7 +33,7 @@ const Root: React.FC = () => {
             <Typography text="Create form" elementType={ElementType.H1} />
             <InputField
                 name="fullname"
-                label="Full name*:"
+                label="Full name"
                 onChangeInput={onChangeFullName}
                 value={fullname}
                 format={formatSpecialCharactersAndNumbers}
@@ -46,16 +46,18 @@ const Root: React.FC = () => {
                     ],
                     setFormError: setIsFormError,
                 }}
+                isRequired
             />
             <InputField
                 name="email"
-                label="Email*:"
+                label="Email"
                 onChangeInput={onSetEmail}
                 value={email}
                 validations={{
                     validationFunctions: [isEmailValid(fullname)],
                     setFormError: setIsFormError,
                 }}
+                isRequired
             />
             <Button text="Create" onClick={onClickSubmit} disabled={isFormError} />
         </div>

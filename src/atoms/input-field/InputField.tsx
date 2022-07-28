@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styles from './InputField.module.scss';
 import { useStore } from 'react-redux';
+import { isRequiredValueFilled } from '../../utils/validations';
 
 export enum Type {
     Text = 'text',
@@ -17,10 +18,20 @@ interface Props {
         validationFunctions: Array<(value: string) => string | boolean>;
         setFormError: (isError: boolean) => void;
     };
+    isRequired?: boolean;
 }
 
 const InputField: React.FC<Props> = React.memo((props) => {
-    const { name, label, onChangeInput, type = Type.Text, format, value, validations } = props;
+    const {
+        name,
+        label,
+        onChangeInput,
+        type = Type.Text,
+        format,
+        value,
+        validations,
+        isRequired,
+    } = props;
 
     const [errors, setErrors] = useState<string[]>([]);
 
@@ -35,6 +46,12 @@ const InputField: React.FC<Props> = React.memo((props) => {
     };
 
     const onValidate = () => {
+        if (isRequired && typeof isRequiredValueFilled(value) === 'string') {
+            setErrors([isRequiredValueFilled(value)] as string[]);
+
+            return;
+        }
+
         if (!validations) {
             return;
         }
@@ -62,7 +79,7 @@ const InputField: React.FC<Props> = React.memo((props) => {
 
     return (
         <div className={styles.container}>
-            <label htmlFor={name}>{label}</label>
+            <label htmlFor={name}>{isRequired ? `${label}*:` : `${label}`}</label>
             <input
                 className={styles.inputField}
                 id={name}

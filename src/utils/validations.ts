@@ -1,3 +1,11 @@
+export const isRequiredValueFilled = (value: string) => {
+    if (!value?.trim()) {
+        return 'Value is required';
+    }
+
+    return true;
+};
+
 export const isCorrectFullNameLength = (value: string) => {
     const valueLength = value.trim().split(' ').join('').length;
 
