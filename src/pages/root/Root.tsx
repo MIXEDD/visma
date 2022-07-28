@@ -95,16 +95,10 @@ const Root: React.FC = () => {
             <InputField
                 label="Full name*:"
                 onChangeInput={onChangeFullName}
-                value={fullName}
                 format={formatSpecialCharactersAndNumbers}
                 errors={fullNameErrors}
             />
-            <InputField
-                label="Email*:"
-                onChangeInput={onSetEmail}
-                value={email}
-                errors={emailErrors}
-            />
+            <InputField label="Email*:" onChangeInput={onSetEmail} errors={emailErrors} />
             <Selector
                 data={[{ value: '', label: '' }, ...coachesOptions]}
                 onChange={onSetCoach}

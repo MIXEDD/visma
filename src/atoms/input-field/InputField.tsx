@@ -13,12 +13,11 @@ interface Props {
     onChangeInput: (value: string) => void;
     type?: Type;
     format?: (value: string) => string;
-    value: string;
     errors?: string[];
 }
 
 const InputField: React.FC<Props> = React.memo((props) => {
-    const { label, onChangeInput, type = Type.Text, format, value, errors } = props;
+    const { label, onChangeInput, type = Type.Text, format, errors } = props;
 
     const onChange = (event: React.FormEvent<HTMLInputElement>) => {
         if (format) {
@@ -33,7 +32,7 @@ const InputField: React.FC<Props> = React.memo((props) => {
     return (
         <div className={styles.container}>
             <label>{label}</label>
-            <input className={styles.inputField} type={type} onChange={onChange} value={value} />
+            <input className={styles.inputField} type={type} onChange={onChange} />
             {errors?.map((validationError, index) => (
                 <Typography key={index} color={Color.Error} text={validationError} />
             ))}
