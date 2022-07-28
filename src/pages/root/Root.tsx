@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import InputField from '../../atoms/input-field/InputField';
 import Typography, { ElementType } from '../../atoms/typography/Typography';
@@ -18,6 +18,7 @@ import Selector from '../../atoms/selector/Selector';
 import { RootReducer } from '../../store';
 import { TreeData } from '../../store/tree/types';
 import { getTreeNodes } from '../../utils/tree';
+import { onSetNode } from '../../store/tree/actions';
 
 import styles from './Root.module.scss';
 
@@ -43,8 +44,10 @@ const addEmailValidation = (value: string, fullName: string) => {
 };
 
 const Root: React.FC = () => {
-    const [fullName, setFullName] = useState<string>('');
-    const [email, setEmail] = useState<string>('');
+    const dispatch = useDispatch();
+
+    const [fullName, setFullName] = useState<string>('Asd');
+    const [email, setEmail] = useState<string>('asd@example.com');
     const [coach, setCoach] = useState<string>('');
     const [fullNameErrors, setFullNameErrors] = useState<string[]>([]);
     const [emailErrors, setEmailErrors] = useState<string[]>([]);
@@ -85,7 +88,13 @@ const Root: React.FC = () => {
             !emailErrorMessages.length &&
             !coachErrorMessages.length
         ) {
-            console.log('click');
+            dispatch(
+                onSetNode({
+                    fullName,
+                    email,
+                    coach,
+                }),
+            );
         }
     };
 
