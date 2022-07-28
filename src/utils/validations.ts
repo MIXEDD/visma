@@ -7,3 +7,52 @@ export const isCorrectFullNameLength = (value: string) => {
 
     return 'Length must be between 3 and 64 characters';
 };
+
+export const isFullNameNoMoreThanFourWords = (value: string) => {
+    if (value.trim().split(' ').length > 4) {
+        return 'Full name can only be no more than four words';
+    }
+
+    return true;
+};
+
+export const isFullNameStartsWithCapitalLetter = (value: string) => {
+    let isError = false;
+
+    value.split(' ').forEach((word) => {
+        if (word[0] !== word[0].toUpperCase()) {
+            isError = true;
+        }
+    });
+
+    if (isError) {
+        return 'All names have to start with uppercase letter';
+    }
+
+    return true;
+};
+
+export const isFullNameUnique = (value: string, data: any) => {
+    return true;
+};
+
+export const isEmailValid = (value: string, emailValue: string) => {
+    let email: string = '';
+    const words = value.trim().split(' ');
+
+    words.forEach((word, index) => {
+        email += word;
+
+        if (index < words.length - 1) {
+            email += '.';
+        }
+    });
+
+    email += '@example.com';
+
+    if (email !== emailValue) {
+        return 'Email is of incorrect format';
+    }
+
+    return true;
+};

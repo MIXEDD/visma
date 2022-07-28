@@ -5,6 +5,11 @@ import Button from '../../atoms/button/Button';
 import { formatSpecialCharactersAndNumbers } from '../../utils/format';
 
 import styles from './Root.module.scss';
+import {
+    isEmailValid,
+    isFullNameNoMoreThanFourWords,
+    isFullNameStartsWithCapitalLetter,
+} from '../../utils/validations';
 
 const Root: React.FC = () => {
     const [fullname, setFullname] = useState<string>('');
@@ -18,6 +23,8 @@ const Root: React.FC = () => {
         setEmail(value);
     };
 
+    const onClickSubmit = () => {};
+
     return (
         <div className={styles.container}>
             <Typography text="Create form" elementType={ElementType.H1} />
@@ -29,7 +36,7 @@ const Root: React.FC = () => {
                 format={formatSpecialCharactersAndNumbers}
             />
             <InputField name="email" label="Email:" onChangeInput={onSetEmail} value={email} />
-            <Button text="Create" onClick={() => {}} />
+            <Button text="Create" onClick={onClickSubmit} />
         </div>
     );
 };
