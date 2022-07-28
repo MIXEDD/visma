@@ -27,11 +27,14 @@ export const isFullNameNoMoreThanFourWords = (value: string) => {
 export const isFullNameStartsWithCapitalLetter = (value: string) => {
     let isError = false;
 
-    value.split(' ').forEach((word) => {
-        if (word[0] !== word[0].toUpperCase()) {
-            isError = true;
-        }
-    });
+    value
+        .trim()
+        .split(' ')
+        .forEach((word) => {
+            if (word[0] !== word[0].toUpperCase()) {
+                isError = true;
+            }
+        });
 
     if (isError) {
         return 'All names have to start with uppercase letter';

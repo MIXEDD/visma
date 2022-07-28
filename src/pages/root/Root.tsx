@@ -1,21 +1,46 @@
 import React, { useState } from 'react';
+
 import InputField from '../../atoms/input-field/InputField';
 import Typography, { ElementType } from '../../atoms/typography/Typography';
 import Button from '../../atoms/button/Button';
 import { formatSpecialCharactersAndNumbers } from '../../utils/format';
-
-import styles from './Root.module.scss';
 import {
     isCorrectFullNameLength,
     isEmailValid,
     isFullNameNoMoreThanFourWords,
     isFullNameStartsWithCapitalLetter,
     isFullNameUnique,
+    isRequiredValueFilled,
 } from '../../utils/validations';
+import Selector from '../../atoms/selector/Selector';
+
+import styles from './Root.module.scss';
+
+const addFullNameValidation = (value: string) => {
+    if (!value) {
+        return [];
+    }
+
+    return [
+        isCorrectFullNameLength,
+        isFullNameNoMoreThanFourWords,
+        isFullNameStartsWithCapitalLetter,
+        isFullNameUnique([]),
+    ];
+};
+
+const addEmailValidation = (value: string, fullName: string) => {
+    if (!value) {
+        return [];
+    }
+
+    return [isEmailValid(fullName)];
+};
 
 const Root: React.FC = () => {
-    const [fullname, setFullname] = useState<string>('');
+    const [fullName, setFullname] = useState<string>('');
     const [email, setEmail] = useState<string>('');
+    const [coach, setCoach] = useState<string>('');
     const [isFormError, setIsFormError] = useState<boolean>(true);
 
     const onChangeFullName = (value: string) => {
@@ -26,38 +51,52 @@ const Root: React.FC = () => {
         setEmail(value);
     };
 
+    const onSetCoach = (value: string) => {
+        setCoach(value);
+    };
+
     const onClickSubmit = () => {};
 
     return (
         <div className={styles.container}>
             <Typography text="Create form" elementType={ElementType.H1} />
             <InputField
-                name="fullname"
-                label="Full name"
+                label="Full name*:"
                 onChangeInput={onChangeFullName}
-                value={fullname}
+                value={fullName}
                 format={formatSpecialCharactersAndNumbers}
                 validations={{
                     validationFunctions: [
-                        isCorrectFullNameLength,
-                        isFullNameNoMoreThanFourWords,
-                        isFullNameStartsWithCapitalLetter,
-                        isFullNameUnique([]),
+                        isRequiredValueFilled,
+                        ...addFullNameValidation(fullName),
                     ],
                     setFormError: setIsFormError,
                 }}
-                isRequired
             />
             <InputField
-                name="email"
-                label="Email"
+                label="Email*:"
                 onChangeInput={onSetEmail}
                 value={email}
                 validations={{
-                    validationFunctions: [isEmailValid(fullname)],
+                    validationFunctions: [
+                        isRequiredValueFilled,
+                        ...addEmailValidation(email, fullName),
+                    ],
                     setFormError: setIsFormError,
                 }}
-                isRequired
+            />
+            <Selector
+                data={[
+                    { value: '', label: '' },
+                    { value: 'asd', label: 'asd' },
+                    { value: 'asdd', label: 'asdd' },
+                ]}
+                onChange={onSetCoach}
+                label="Select coach*:"
+                validations={{
+                    validationFunctions: [isRequiredValueFilled],
+                    setFormError: setIsFormError,
+                }}
             />
             <Button text="Create" onClick={onClickSubmit} disabled={isFormError} />
         </div>
