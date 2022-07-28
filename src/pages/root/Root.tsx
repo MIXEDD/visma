@@ -43,7 +43,7 @@ const addEmailValidation = (value: string, fullName: string) => {
 };
 
 const Root: React.FC = () => {
-    const [fullName, setFullname] = useState<string>('');
+    const [fullName, setFullName] = useState<string>('');
     const [email, setEmail] = useState<string>('');
     const [coach, setCoach] = useState<string>('');
     const [fullNameErrors, setFullNameErrors] = useState<string[]>([]);
@@ -56,7 +56,7 @@ const Root: React.FC = () => {
     }, [treeState]);
 
     const onChangeFullName = (value: string) => {
-        setFullname(value);
+        setFullName(value);
     };
 
     const onSetEmail = (value: string) => {
