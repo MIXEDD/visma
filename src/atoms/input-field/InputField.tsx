@@ -55,6 +55,8 @@ const InputField: React.FC<Props> = React.memo((props) => {
 
         if (errorMessages.length) {
             validations.setFormError(true);
+        } else {
+            validations.setFormError(false);
         }
     };
 
