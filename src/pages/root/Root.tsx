@@ -12,13 +12,14 @@ import {
     isFullNameStartsWithCapitalLetter,
     isFullNameUnique,
     isRequiredValueFilled,
+    onValidateField,
 } from '../../utils/validations';
 import Selector from '../../atoms/selector/Selector';
 import { RootReducer } from '../../store';
 import { TreeData } from '../../store/tree/types';
+import { getTreeNodes } from '../../utils/tree';
 
 import styles from './Root.module.scss';
-import { getTreeNodes } from '../../utils/tree';
 
 const addFullNameValidation = (value: string, treeData: TreeData) => {
     if (!value) {
@@ -45,7 +46,9 @@ const Root: React.FC = () => {
     const [fullName, setFullname] = useState<string>('');
     const [email, setEmail] = useState<string>('');
     const [coach, setCoach] = useState<string>('');
-    const [isFormError, setIsFormError] = useState<boolean>(true);
+    const [fullNameErrors, setFullNameErrors] = useState<string[]>([]);
+    const [emailErrors, setEmailErrors] = useState<string[]>([]);
+    const [coachErrors, setCoachErrors] = useState<string[]>([]);
     const treeState = useSelector((state: RootReducer) => state.tree);
 
     const coachesOptions = useMemo(() => {
@@ -64,7 +67,27 @@ const Root: React.FC = () => {
         setCoach(value);
     };
 
-    const onClickSubmit = () => {};
+    const onClickSubmit = () => {
+        const fullNameErrorMessages = onValidateField(
+            [isRequiredValueFilled, ...addFullNameValidation(fullName, treeState)],
+            fullName,
+            setFullNameErrors,
+        );
+        const emailErrorMessages = onValidateField(
+            [isRequiredValueFilled, ...addEmailValidation(email, fullName)],
+            email,
+            setEmailErrors,
+        );
+        const coachErrorMessages = onValidateField([isRequiredValueFilled], coach, setCoachErrors);
+
+        if (
+            !fullNameErrorMessages.length &&
+            !emailErrorMessages.length &&
+            !coachErrorMessages.length
+        ) {
+            console.log('click');
+        }
+    };
 
     return (
         <div className={styles.container}>
@@ -74,36 +97,21 @@ const Root: React.FC = () => {
                 onChangeInput={onChangeFullName}
                 value={fullName}
                 format={formatSpecialCharactersAndNumbers}
-                validations={{
-                    validationFunctions: [
-                        isRequiredValueFilled,
-                        ...addFullNameValidation(fullName, treeState),
-                    ],
-                    setFormError: setIsFormError,
-                }}
+                errors={fullNameErrors}
             />
             <InputField
                 label="Email*:"
                 onChangeInput={onSetEmail}
                 value={email}
-                validations={{
-                    validationFunctions: [
-                        isRequiredValueFilled,
-                        ...addEmailValidation(email, fullName),
-                    ],
-                    setFormError: setIsFormError,
-                }}
+                errors={emailErrors}
             />
             <Selector
                 data={[{ value: '', label: '' }, ...coachesOptions]}
                 onChange={onSetCoach}
                 label="Select coach*:"
-                validations={{
-                    validationFunctions: [isRequiredValueFilled],
-                    setFormError: setIsFormError,
-                }}
+                errors={coachErrors}
             />
-            <Button text="Create" onClick={onClickSubmit} disabled={isFormError} />
+            <Button text="Create" onClick={onClickSubmit} />
         </div>
     );
 };

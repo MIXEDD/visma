@@ -87,3 +87,25 @@ export const isEmailValid =
 
         return true;
     };
+
+export const onValidateField = (
+    validations: Array<(value: string) => string | boolean>,
+    value: string,
+    setErrors: (errors: string[]) => void,
+) => {
+    const errorMessages = validations
+        .map((validationFunc) => {
+            const result = validationFunc(value);
+
+            if (typeof result === 'string') {
+                return result;
+            }
+
+            return null;
+        })
+        .filter(Boolean) as string[];
+
+    setErrors(errorMessages);
+
+    return errorMessages;
+};
