@@ -1,6 +1,8 @@
 import React, { useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
+import { ROUTES } from '../../constants';
 import InputField from '../../atoms/input-field/InputField';
 import Typography, { ElementType } from '../../atoms/typography/Typography';
 import Button from '../../atoms/button/Button';
@@ -45,6 +47,7 @@ const addEmailValidation = (value: string, fullName: string) => {
 
 const Root: React.FC = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const [fullName, setFullName] = useState<string>('');
     const [email, setEmail] = useState<string>('');
@@ -107,6 +110,7 @@ const Root: React.FC = () => {
                     coach,
                 }),
             );
+            navigate(ROUTES.TREE);
         }
     };
 
