@@ -1,19 +1,25 @@
-import { SET_NODE } from './constants';
+import { INITIAL_STATE, SET_NODE } from './constants';
+import { NodeForInsertion, TreeData } from './types';
+import { insertNodeToParent } from '../../utils/tree';
+import * as R from 'ramda';
 
-interface State {
-    tree: any;
-}
+export interface TreeState extends TreeData {}
 
-const initialState: State = {
-    tree: null,
+const initialState: TreeState = INITIAL_STATE;
+
+const setNode = (treeData: TreeData, node: NodeForInsertion) => {
+    const clonedTreeState = R.clone(treeData);
+    insertNodeToParent(clonedTreeState, node);
+
+    return clonedTreeState;
 };
 
-export function treeReducer(state: State = initialState, action: any) {
+export function treeReducer(state: TreeState = initialState, action: any) {
     switch (action.type) {
         case SET_NODE: {
-            state.tree = action.payload;
+            state = setNode(state, action.payload);
 
-            break;
+            return state;
         }
         default:
             return state;

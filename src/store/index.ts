@@ -1,5 +1,5 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import { treeReducer } from './tree/reducer';
+import { treeReducer, TreeState } from './tree/reducer';
 
 const rootReducer = combineReducers({
     tree: treeReducer,
@@ -8,3 +8,7 @@ const rootReducer = combineReducers({
 export const store = configureStore({
     reducer: rootReducer,
 });
+
+export interface RootReducer {
+    tree: TreeState;
+}
