@@ -20,9 +20,7 @@ const deleteNode = (treeData: TreeData, fullName: string) => {
     const result = deleteParentNode(clonedTreeState, fullName);
 
     if (result === null) {
-        clonedTreeState = null;
-
-        return clonedTreeState;
+        return null;
     }
 
     if (result) {
