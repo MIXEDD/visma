@@ -7,7 +7,7 @@ import Node from './node/Node';
 const Tree: React.FC = () => {
     const treeState = useSelector((state: RootState) => state.tree);
 
-    return <Node treeData={treeState} />;
+    return treeState && <Node treeData={treeState} />;
 };
 
 export default Tree;

@@ -1,6 +1,6 @@
-import { INITIAL_STATE, SET_NODE } from './constants';
-import { NodeForInsertion, TreeData } from './types';
-import { insertNodeToParent } from '../../utils/tree';
+import { DELETE_NODE, INITIAL_STATE, SET_NODE } from './constants';
+import { DeleteNodeAction, NodeForInsertion, SetNodeAction, TreeAction, TreeData } from './types';
+import { deleteParentNode, deleteTreeNode, insertNodeToParent } from '../../utils/tree';
 import * as R from 'ramda';
 
 export interface TreeState extends TreeData {}
@@ -14,10 +14,39 @@ const setNode = (treeData: TreeData, node: NodeForInsertion) => {
     return clonedTreeState;
 };
 
-export function treeReducer(state: TreeState = initialState, action: any) {
+const deleteNode = (treeData: TreeData, fullName: string) => {
+    let clonedTreeState: TreeData | null = R.clone(treeData);
+
+    const result = deleteParentNode(clonedTreeState, fullName);
+
+    if (result === null) {
+        clonedTreeState = null;
+
+        return clonedTreeState;
+    }
+
+    if (result) {
+        return clonedTreeState;
+    }
+
+    deleteTreeNode(clonedTreeState, fullName);
+
+    return clonedTreeState;
+};
+
+export function treeReducer(state: TreeState | null = initialState, action: TreeAction) {
     switch (action.type) {
         case SET_NODE: {
-            state = setNode(state, action.payload);
+            if (state) {
+                state = setNode(state, (action as SetNodeAction).payload);
+            }
+
+            return state;
+        }
+        case DELETE_NODE: {
+            if (state) {
+                state = deleteNode(state, (action as DeleteNodeAction).payload);
+            }
 
             return state;
         }

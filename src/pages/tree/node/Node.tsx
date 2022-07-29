@@ -1,10 +1,12 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
 
 import { TreeData } from '../../../store/tree/types';
 import Typography from '../../../atoms/typography/Typography';
 
 import styles from './Node.module.scss';
 import DeleteIcon from '../../../atoms/DeleteIcon/DeleteIcon';
+import { onDeleteNode } from '../../../store/tree/actions';
 
 interface Props {
     treeData: TreeData;
@@ -17,8 +19,10 @@ const Node: React.FC<Props> = (props) => {
         parentFullName,
     } = props;
 
+    const dispatch = useDispatch();
+
     const onClickDelete = () => {
-        console.log('delete');
+        dispatch(onDeleteNode(fullName));
     };
 
     return (
