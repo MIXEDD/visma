@@ -46,8 +46,8 @@ const addEmailValidation = (value: string, fullName: string) => {
 const Root: React.FC = () => {
     const dispatch = useDispatch();
 
-    const [fullName, setFullName] = useState<string>('Asd');
-    const [email, setEmail] = useState<string>('asd@example.com');
+    const [fullName, setFullName] = useState<string>('');
+    const [email, setEmail] = useState<string>('');
     const [coach, setCoach] = useState<string>('');
     const [fullNameErrors, setFullNameErrors] = useState<string[]>([]);
     const [emailErrors, setEmailErrors] = useState<string[]>([]);
@@ -60,14 +60,26 @@ const Root: React.FC = () => {
 
     const onChangeFullName = (value: string) => {
         setFullName(value);
+
+        if (fullNameErrors.length) {
+            setFullNameErrors([]);
+        }
     };
 
     const onSetEmail = (value: string) => {
         setEmail(value);
+
+        if (emailErrors.length) {
+            setEmailErrors([]);
+        }
     };
 
     const onSetCoach = (value: string) => {
         setCoach(value);
+
+        if (coachErrors.length) {
+            setCoachErrors([]);
+        }
     };
 
     const onClickSubmit = () => {
