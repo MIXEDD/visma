@@ -4,6 +4,7 @@ import { TreeData } from '../../../store/tree/types';
 import Typography from '../../../atoms/typography/Typography';
 
 import styles from './Node.module.scss';
+import DeleteIcon from '../../../atoms/DeleteIcon/DeleteIcon';
 
 interface Props {
     treeData: TreeData;
@@ -16,22 +17,30 @@ const Node: React.FC<Props> = (props) => {
         parentFullName,
     } = props;
 
+    const onClickDelete = () => {
+        console.log('delete');
+    };
+
     return (
         <div className={styles.container}>
             <div className={styles.node}>
                 <div className={styles.marginRight}>
                     <Typography text={fullName} />
                 </div>
-                <div className={parentFullName ? styles.marginRight : undefined}>
+                <div className={styles.marginRight}>
                     <Typography text={email} />
                 </div>
                 {parentFullName && (
-                    <div>
+                    <div className={styles.marginRight}>
                         <Typography text={parentFullName} />
                     </div>
                 )}
+                <DeleteIcon onClick={onClickDelete} />
             </div>
-            {subNodes && subNodes.map((node) => <Node treeData={node} parentFullName={fullName} />)}
+            {subNodes &&
+                subNodes.map((node, index) => (
+                    <Node key={index} treeData={node} parentFullName={fullName} />
+                ))}
         </div>
     );
 };

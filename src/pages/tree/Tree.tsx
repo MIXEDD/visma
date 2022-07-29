@@ -7,11 +7,7 @@ import Node from './node/Node';
 const Tree: React.FC = () => {
     const treeState = useSelector((state: RootState) => state.tree);
 
-    return (
-        <div>
-            <Node treeData={treeState} />
-        </div>
-    );
+    return <Node treeData={treeState} />;
 };
 
 export default Tree;
