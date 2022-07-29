@@ -17,7 +17,7 @@ import {
     onValidateField,
 } from '../../utils/validations';
 import Selector from '../../atoms/selector/Selector';
-import { RootReducer } from '../../store';
+import { RootState } from '../../store';
 import { TreeData } from '../../store/tree/types';
 import { getTreeNodes } from '../../utils/tree';
 import { onSetNode } from '../../store/tree/actions';
@@ -55,7 +55,7 @@ const Root: React.FC = () => {
     const [fullNameErrors, setFullNameErrors] = useState<string[]>([]);
     const [emailErrors, setEmailErrors] = useState<string[]>([]);
     const [coachErrors, setCoachErrors] = useState<string[]>([]);
-    const treeState = useSelector((state: RootReducer) => state.tree);
+    const treeState = useSelector((state: RootState) => state.tree);
 
     const coachesOptions = useMemo(() => {
         return getTreeNodes(treeState);
