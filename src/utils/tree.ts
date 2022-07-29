@@ -1,4 +1,5 @@
 import { NodeForInsertion, TreeData } from '../store/tree/types';
+import * as R from 'ramda';
 
 export const getTreeNodes = (treeData: TreeData): Array<{ value: string; label: string }> => {
     const treeNodes = [];
@@ -90,4 +91,28 @@ export const deleteTreeNode = (treeData: TreeData, fullName: string): boolean =>
     }
 
     return false;
+};
+
+export const orderTreeNode = (treeData: TreeData, fullName: string) => {
+    if (treeData.subNodes) {
+        const indexOfNode = treeData.subNodes.findIndex((node) => node.fullName === fullName);
+
+        if (indexOfNode === 0) {
+            treeData.subNodes = R.move(indexOfNode, indexOfNode + 1, treeData.subNodes);
+
+            return true;
+        }
+
+        if (indexOfNode > 0) {
+            treeData.subNodes = R.move(indexOfNode, indexOfNode - 1, treeData.subNodes);
+
+            return true;
+        }
+
+        for (const node of treeData.subNodes) {
+            if (orderTreeNode(node, fullName)) {
+                return true;
+            }
+        }
+    }
 };

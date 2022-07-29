@@ -1,6 +1,18 @@
-import { DELETE_NODE, INITIAL_STATE, SET_NODE } from './constants';
-import { DeleteNodeAction, NodeForInsertion, SetNodeAction, TreeAction, TreeData } from './types';
-import { deleteParentNode, deleteTreeNode, insertNodeToParent } from '../../utils/tree';
+import { DELETE_NODE, INITIAL_STATE, ORDER_NODE, SET_NODE } from './constants';
+import {
+    DeleteNodeAction,
+    NodeForInsertion,
+    OrderNodeAction,
+    SetNodeAction,
+    TreeAction,
+    TreeData,
+} from './types';
+import {
+    deleteParentNode,
+    deleteTreeNode,
+    insertNodeToParent,
+    orderTreeNode,
+} from '../../utils/tree';
 import * as R from 'ramda';
 
 export interface TreeState extends TreeData {}
@@ -44,6 +56,19 @@ export function treeReducer(state: TreeState | null = initialState, action: Tree
         case DELETE_NODE: {
             if (state) {
                 state = deleteNode(state, (action as DeleteNodeAction).payload);
+            }
+
+            return state;
+        }
+        case ORDER_NODE: {
+            const fullName = (action as OrderNodeAction).payload;
+
+            if (state) {
+                const clonedTreeState = R.clone(state);
+
+                orderTreeNode(clonedTreeState, fullName);
+
+                state = clonedTreeState;
             }
 
             return state;

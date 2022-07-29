@@ -1,4 +1,4 @@
-import { DELETE_NODE, SET_NODE } from './constants';
+import { DELETE_NODE, ORDER_NODE, SET_NODE } from './constants';
 
 export interface TreeData {
     fullName: string;
@@ -22,4 +22,9 @@ export interface DeleteNodeAction {
     payload: string;
 }
 
-export type TreeAction = SetNodeAction | DeleteNodeAction;
+export interface OrderNodeAction {
+    type: typeof ORDER_NODE;
+    payload: string;
+}
+
+export type TreeAction = SetNodeAction | DeleteNodeAction | OrderNodeAction;
