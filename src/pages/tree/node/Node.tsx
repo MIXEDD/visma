@@ -5,8 +5,9 @@ import { TreeData } from '../../../store/tree/types';
 import Typography from '../../../atoms/typography/Typography';
 
 import styles from './Node.module.scss';
-import DeleteIcon from '../../../atoms/DeleteIcon/DeleteIcon';
+import DeleteIcon from '../../../atoms/deleteIcon/DeleteIcon';
 import { onDeleteNode } from '../../../store/tree/actions';
+import Arrow, { ArrowDirection } from '../../../atoms/arrow/Arrow';
 
 interface Props {
     treeData: TreeData;
@@ -39,7 +40,9 @@ const Node: React.FC<Props> = (props) => {
                         <Typography text={parentFullName} />
                     </div>
                 )}
-                <DeleteIcon onClick={onClickDelete} />
+                <div className={styles.marginRight}>
+                    <DeleteIcon onClick={onClickDelete} />
+                </div>
             </div>
             {subNodes &&
                 subNodes.map((node, index) => (
