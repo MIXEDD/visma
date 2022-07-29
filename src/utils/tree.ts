@@ -90,7 +90,9 @@ export const deleteTreeNode = (treeData: TreeData, fullName: string): boolean =>
         }
 
         for (const node of treeData.subNodes) {
-            deleteTreeNode(node, fullName);
+            if (deleteTreeNode(node, fullName)) {
+                return true;
+            }
         }
     }
 
