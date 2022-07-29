@@ -1,6 +1,8 @@
 import { NodeForInsertion, TreeData } from '../store/tree/types';
 import * as R from 'ramda';
 
+const MAX_NODES_COUNT = 2000;
+
 export const getTreeNodes = (treeData: TreeData): Array<{ value: string; label: string }> => {
     const treeNodes = [];
 
@@ -17,6 +19,8 @@ export const getTreeNodes = (treeData: TreeData): Array<{ value: string; label: 
 
     return treeNodes;
 };
+
+export const isTreeFull = (treeData: TreeData) => getTreeNodes(treeData).length > MAX_NODES_COUNT;
 
 export const insertNodeToParent = (treeData: TreeData, node: NodeForInsertion): boolean => {
     if (treeData.fullName === node.coach) {
