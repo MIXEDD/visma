@@ -9,6 +9,6 @@ export const store = configureStore({
     reducer: rootReducer,
 });
 
-export interface RootReducer {
+export interface RootState {
     tree: TreeState;
 }

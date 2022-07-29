@@ -1,4 +1,4 @@
-import { NodeForInsertion, TreeData, TreeNode } from '../store/tree/types';
+import { NodeForInsertion, TreeData } from '../store/tree/types';
 
 export const getTreeNodes = (treeData: TreeData): Array<{ value: string; label: string }> => {
     const treeNodes = [];

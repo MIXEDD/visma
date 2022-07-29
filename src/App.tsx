@@ -8,8 +8,8 @@ function App() {
     return (
         <div className="App">
             <Routes>
-                <Route path={ROUTES.ROOT} element={<Root />} />
-                <Route path={ROUTES.TREE} element={<Tree />} />
+                {/*<Route path={ROUTES.ROOT} element={<Root />} />*/}
+                <Route path={ROUTES.ROOT} element={<Tree />} />
             </Routes>
         </div>
     );
