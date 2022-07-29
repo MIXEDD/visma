@@ -1,6 +1,7 @@
 const NAME = 'TREE';
 export const SET_NODE = `${NAME}_SET_NODE`;
 export const DELETE_NODE = `${NAME}_DELETE_NODE`;
+export const ORDER_NODE = `${NAME}_ORDER_NODE`;
 
 export const INITIAL_STATE = {
     fullName: 'Penelope Randi',
