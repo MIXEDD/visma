@@ -1,4 +1,10 @@
-import { DeleteNodeAction, NodeForInsertion, OrderNodeAction, SetNodeAction } from './types';
+import {
+    DeleteNodeAction,
+    NodeForInsertion,
+    OrderDirection,
+    OrderNodeAction,
+    SetNodeAction,
+} from './types';
 import { DELETE_NODE, ORDER_NODE, SET_NODE } from './constants';
 
 export const onSetNode = (node: NodeForInsertion): SetNodeAction => ({
@@ -11,7 +17,10 @@ export const onDeleteNode = (fullName: string): DeleteNodeAction => ({
     payload: fullName,
 });
 
-export const onOrderNode = (fullName: string): OrderNodeAction => ({
+export const onOrderNode = (fullName: string, orderDirection: OrderDirection): OrderNodeAction => ({
     type: ORDER_NODE,
-    payload: fullName,
+    payload: {
+        fullName,
+        orderDirection,
+    },
 });
