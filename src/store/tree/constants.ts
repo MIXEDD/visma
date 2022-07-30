@@ -19,6 +19,14 @@ export const INITIAL_STATE = {
                             fullName: 'Janvier Inara',
                             email: 'janvier.inara@example.com',
                         },
+                        {
+                            fullName: 'Janvier Inara In',
+                            email: 'janvier.inara.in@example.com',
+                        },
+                        {
+                            fullName: 'Janvier Inara InI',
+                            email: 'janvier.inara.ini@example.com',
+                        },
                     ],
                 },
             ],
