@@ -28,21 +28,18 @@ export function treeReducer(state: TreeState | null = initialState, action: Tree
             const fullName = (action as DeleteNodeAction).payload;
 
             if (state) {
-                let clonedTreeState: TreeData | null = R.clone(state);
+                const result = deleteParentNode(state, fullName);
 
-                const result = deleteParentNode(clonedTreeState, fullName);
-
-                if (result === null) {
-                    return null;
+                if (result || result === null) {
+                    return result;
                 }
 
-                if (result) {
-                    return clonedTreeState;
+                if (state?.subNodes?.length) {
+                    return {
+                        ...state,
+                        subNodes: deleteTreeNode(state.subNodes, fullName),
+                    };
                 }
-
-                deleteTreeNode(clonedTreeState, fullName);
-
-                return clonedTreeState;
             }
 
             return state;

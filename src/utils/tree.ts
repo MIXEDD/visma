@@ -46,15 +46,21 @@ export const insertNodeToParent = (treeData: TreeData, node: NodeForInsertion): 
     return false;
 };
 
-export const deleteParentNode = (treeData: TreeData, fullName: string): boolean | null => {
-    if (treeData.fullName === fullName) {
-        if (treeData.subNodes?.length) {
-            const [parentNode, ...rest] = treeData.subNodes;
-            treeData.fullName = parentNode.fullName;
-            treeData.email = parentNode.email;
-            treeData.subNodes = [...(parentNode.subNodes || []), ...rest];
+export const deleteParentNode = (
+    treeData: TreeData,
+    fullName: string,
+): TreeData | null | boolean => {
+    const clonedTreeData = R.clone(treeData);
 
-            return true;
+    if (clonedTreeData.fullName === fullName) {
+        if (clonedTreeData.subNodes?.length) {
+            const [parentNode, ...rest] = clonedTreeData.subNodes;
+
+            return {
+                fullName: parentNode.fullName,
+                email: parentNode.email,
+                subNodes: [...(parentNode.subNodes || []), ...rest],
+            };
         }
 
         return null;
@@ -63,40 +69,39 @@ export const deleteParentNode = (treeData: TreeData, fullName: string): boolean 
     return false;
 };
 
-export const deleteTreeNode = (treeData: TreeData, fullName: string): boolean => {
-    if (treeData.subNodes) {
-        if (treeData.subNodes.find((node) => node.fullName === fullName)) {
-            const mappedSubNodes: Array<TreeData> = [];
+export const deleteTreeNode = (treeData: TreeData[], fullName: string): TreeData[] => {
+    let data: TreeData[] = [...treeData];
 
-            for (const node of treeData.subNodes) {
-                if (node.fullName === fullName) {
-                    if (node.subNodes) {
-                        mappedSubNodes.push(...node.subNodes);
-                    }
+    if (data.find((node) => node.fullName === fullName)) {
+        const mappedSubNodes: TreeData[] = [];
 
-                    continue;
+        for (const node of data) {
+            if (node.fullName === fullName) {
+                if (node.subNodes) {
+                    mappedSubNodes.push(...node.subNodes);
                 }
 
-                mappedSubNodes.push(node);
+                continue;
             }
 
-            if (!mappedSubNodes.length) {
-                delete treeData.subNodes;
-            } else {
-                treeData.subNodes = mappedSubNodes;
-            }
-
-            return true;
+            mappedSubNodes.push(node);
         }
 
-        for (const node of treeData.subNodes) {
-            if (deleteTreeNode(node, fullName)) {
-                return true;
-            }
-        }
+        data = mappedSubNodes;
     }
 
-    return false;
+    return data.map((node) => {
+        if (node.subNodes?.length) {
+            return {
+                ...node,
+                subNodes: deleteTreeNode(node.subNodes, fullName),
+            };
+        }
+
+        return {
+            ...node,
+        };
+    });
 };
 
 export const orderTreeNode = (
@@ -107,12 +112,12 @@ export const orderTreeNode = (
     const indexOfNode = treeData.findIndex((node) => node.fullName === fullName);
     let data: TreeData[] = [...treeData];
 
-    if (orderDirection === OrderDirection.Up) {
+    if (orderDirection === OrderDirection.Up && indexOfNode >= 0) {
         data = R.move(indexOfNode, indexOfNode - 1, treeData);
     }
 
-    if (orderDirection === OrderDirection.Down) {
-        data = R.move(indexOfNode, indexOfNode - 1, treeData);
+    if (orderDirection === OrderDirection.Down && indexOfNode >= 0) {
+        data = R.move(indexOfNode, indexOfNode + 1, treeData);
     }
 
     return data.map((node) => {
@@ -123,6 +128,8 @@ export const orderTreeNode = (
             };
         }
 
-        return node;
+        return {
+            ...node,
+        };
     });
 };

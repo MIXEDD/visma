@@ -17,7 +17,7 @@ const Tree: React.FC = () => {
         return <Typography text="Tree cannot have more thant 2000 nodes" />;
     }
 
-    return treeState && <Node treeData={treeState} />;
+    return <Node treeData={treeState} />;
 };
 
 export default Tree;
