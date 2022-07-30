@@ -1,6 +1,10 @@
 import { TreeData } from '../store/tree/types';
 
-export const isRequiredValueFilled = (value: string): string | boolean => {
+export const isRequiredValueFilled = (value: string | number): string | boolean => {
+    if (typeof value === 'number') {
+        return true;
+    }
+
     if (!value?.trim()) {
         return 'Value is required';
     }
@@ -32,6 +36,7 @@ export const isFullNameStartsWithCapitalLetter = (value: string): string | boole
     value
         .trim()
         .split(' ')
+        .filter(Boolean)
         .forEach((word) => {
             if (word[0] !== word[0].toUpperCase()) {
                 isError = true;
@@ -62,14 +67,14 @@ export const isFullNameUnique =
             }
         }
 
-        return false;
+        return true;
     };
 
 export const isEmailValid =
-    (fullname: string) =>
+    (fullName: string) =>
     (emailValue: string): string | boolean => {
         let email: string = '';
-        const words = fullname.trim().split(' ');
+        const words = fullName.trim().split(' ').filter(Boolean);
 
         words.forEach((word, index) => {
             email += word.toLowerCase();
@@ -88,12 +93,11 @@ export const isEmailValid =
         return true;
     };
 
-export const onValidateField = (
+export const getValidationErrors = (
     validations: Array<(value: string) => string | boolean>,
     value: string,
-    setErrors: (errors: string[]) => void,
 ) => {
-    const errorMessages = validations
+    return validations
         .map((validationFunc) => {
             const result = validationFunc(value);
 
@@ -104,8 +108,4 @@ export const onValidateField = (
             return null;
         })
         .filter(Boolean) as string[];
-
-    setErrors(errorMessages);
-
-    return errorMessages;
 };

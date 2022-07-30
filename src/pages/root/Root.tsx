@@ -8,13 +8,13 @@ import Typography, { ElementType } from '../../atoms/typography/Typography';
 import Button from '../../atoms/button/Button';
 import { formatSpecialCharactersAndNumbers } from '../../utils/format';
 import {
+    getValidationErrors,
     isCorrectFullNameLength,
     isEmailValid,
     isFullNameNoMoreThanFourWords,
     isFullNameStartsWithCapitalLetter,
     isFullNameUnique,
     isRequiredValueFilled,
-    onValidateField,
 } from '../../utils/validations';
 import Selector from '../../atoms/selector/Selector';
 import { RootState } from '../../store';
@@ -86,17 +86,19 @@ const Root: React.FC = () => {
     };
 
     const onClickSubmit = () => {
-        const fullNameErrorMessages = onValidateField(
+        const fullNameErrorMessages = getValidationErrors(
             [isRequiredValueFilled, ...addFullNameValidation(fullName, treeState)],
             fullName,
-            setFullNameErrors,
         );
-        const emailErrorMessages = onValidateField(
+        const emailErrorMessages = getValidationErrors(
             [isRequiredValueFilled, ...addEmailValidation(email, fullName)],
             email,
-            setEmailErrors,
         );
-        const coachErrorMessages = onValidateField([isRequiredValueFilled], coach, setCoachErrors);
+        const coachErrorMessages = getValidationErrors([isRequiredValueFilled], coach);
+
+        setFullNameErrors(fullNameErrorMessages);
+        setEmailErrors(emailErrorMessages);
+        setCoachErrors(coachErrorMessages);
 
         if (
             !fullNameErrorMessages.length &&
