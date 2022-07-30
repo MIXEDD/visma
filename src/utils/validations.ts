@@ -13,7 +13,7 @@ export const isRequiredValueFilled = (value: string | number): string | boolean 
 };
 
 export const isCorrectFullNameLength = (value: string): string | boolean => {
-    const valueLength = value.trim().split(' ').join('').length;
+    const valueLength = value.trim().split(' ').filter(Boolean).join('').length;
 
     if (valueLength >= 3 && valueLength <= 64) {
         return true;
@@ -23,7 +23,7 @@ export const isCorrectFullNameLength = (value: string): string | boolean => {
 };
 
 export const isFullNameNoMoreThanFourWords = (value: string): string | boolean => {
-    if (value.trim().split(' ').length > 4) {
+    if (value.trim().split(' ').filter(Boolean).length > 4) {
         return 'Full name can only be no more than four words';
     }
 
@@ -31,20 +31,12 @@ export const isFullNameNoMoreThanFourWords = (value: string): string | boolean =
 };
 
 export const isFullNameStartsWithCapitalLetter = (value: string): string | boolean => {
-    let isError = false;
+    const valueArray = value.trim().split(' ').filter(Boolean);
 
-    value
-        .trim()
-        .split(' ')
-        .filter(Boolean)
-        .forEach((word) => {
-            if (word[0] !== word[0].toUpperCase()) {
-                isError = true;
-            }
-        });
-
-    if (isError) {
-        return 'All names have to start with uppercase letter';
+    for (const word of valueArray) {
+        if (word[0] !== word[0].toUpperCase()) {
+            return 'All names have to start with uppercase letter';
+        }
     }
 
     return true;
@@ -81,10 +73,10 @@ export const isEmailValid =
 
             if (index < words.length - 1) {
                 email += '.';
+            } else {
+                email += '@example.com';
             }
         });
-
-        email += '@example.com';
 
         if (email !== emailValue) {
             return 'Email is of incorrect format';
