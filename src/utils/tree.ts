@@ -3,7 +3,7 @@ import * as R from 'ramda';
 
 const MAX_NODES_COUNT = 2000;
 
-export const getTreeNodes = (treeData: TreeData): Array<{ value: string; label: string }> => {
+export const getTreeNodes = (treeData: TreeData): { value: string; label: string }[] => {
     const treeNodes = [];
 
     treeNodes.push({
@@ -111,7 +111,7 @@ export const getTreeDataWithDeletedNode = (treeData: TreeData[], fullName: strin
 };
 
 export const getOrderedTreeData = (
-    treeData: Array<TreeData>,
+    treeData: TreeData[],
     fullName: string,
     orderDirection: OrderDirection,
 ): TreeData[] => {

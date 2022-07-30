@@ -5,7 +5,7 @@ import Typography, { Color } from '../typography/Typography';
 import styles from './Selector.module.scss';
 
 interface Props {
-    data: Array<{ value: string; label: string }>;
+    data: { value: string; label: string }[];
     onChange: (value: string) => void;
     label: string;
     errors?: string[];

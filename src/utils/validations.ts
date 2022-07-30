@@ -94,7 +94,7 @@ export const isEmailValid =
     };
 
 export const getValidationErrors = (
-    validations: Array<(value: string) => string | boolean>,
+    validations: ((value: string) => string | boolean)[],
     value: string,
 ) => {
     return validations
