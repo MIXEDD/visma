@@ -1,12 +1,5 @@
 import { DELETE_NODE, INITIAL_STATE, ORDER_NODE, SET_NODE } from './constants';
-import {
-    DeleteNodeAction,
-    NodeForInsertion,
-    OrderNodeAction,
-    SetNodeAction,
-    TreeAction,
-    TreeData,
-} from './types';
+import { DeleteNodeAction, OrderNodeAction, SetNodeAction, TreeAction, TreeData } from './types';
 import {
     deleteParentNode,
     deleteTreeNode,
@@ -55,14 +48,17 @@ export function treeReducer(state: TreeState | null = initialState, action: Tree
             return state;
         }
         case ORDER_NODE: {
-            const fullName = (action as OrderNodeAction).payload;
+            const payload = (action as OrderNodeAction).payload;
 
-            if (state) {
-                const clonedTreeState = R.clone(state);
-
-                orderTreeNode(clonedTreeState, fullName);
-
-                return clonedTreeState;
+            if (state && state?.subNodes?.length) {
+                return {
+                    ...state,
+                    subNodes: orderTreeNode(
+                        state.subNodes,
+                        payload.fullName,
+                        payload.orderDirection,
+                    ),
+                };
             }
 
             return state;

@@ -1,4 +1,4 @@
-import { NodeForInsertion, TreeData } from '../store/tree/types';
+import { NodeForInsertion, OrderDirection, TreeData } from '../store/tree/types';
 import * as R from 'ramda';
 
 const MAX_NODES_COUNT = 2000;
@@ -99,26 +99,30 @@ export const deleteTreeNode = (treeData: TreeData, fullName: string): boolean =>
     return false;
 };
 
-export const orderTreeNode = (treeData: TreeData, fullName: string) => {
-    if (treeData.subNodes) {
-        const indexOfNode = treeData.subNodes.findIndex((node) => node.fullName === fullName);
+export const orderTreeNode = (
+    treeData: Array<TreeData>,
+    fullName: string,
+    orderDirection: OrderDirection,
+): TreeData[] => {
+    const indexOfNode = treeData.findIndex((node) => node.fullName === fullName);
+    let data: TreeData[] = [...treeData];
 
-        if (indexOfNode === 0) {
-            treeData.subNodes = R.move(indexOfNode, indexOfNode + 1, treeData.subNodes);
-
-            return true;
-        }
-
-        if (indexOfNode > 0) {
-            treeData.subNodes = R.move(indexOfNode, indexOfNode - 1, treeData.subNodes);
-
-            return true;
-        }
-
-        for (const node of treeData.subNodes) {
-            if (orderTreeNode(node, fullName)) {
-                return true;
-            }
-        }
+    if (orderDirection === OrderDirection.Up) {
+        data = R.move(indexOfNode, indexOfNode - 1, treeData);
     }
+
+    if (orderDirection === OrderDirection.Down) {
+        data = R.move(indexOfNode, indexOfNode - 1, treeData);
+    }
+
+    return data.map((node) => {
+        if (node.subNodes?.length) {
+            return {
+                ...node,
+                subNodes: orderTreeNode(node.subNodes, fullName, orderDirection),
+            };
+        }
+
+        return node;
+    });
 };

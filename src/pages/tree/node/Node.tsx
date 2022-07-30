@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 
-import { TreeData } from '../../../store/tree/types';
+import { OrderDirection, TreeData } from '../../../store/tree/types';
 import Typography from '../../../atoms/typography/Typography';
 import DeleteIcon from '../../../atoms/deleteIcon/DeleteIcon';
 import { onDeleteNode, onOrderNode } from '../../../store/tree/actions';
@@ -12,16 +12,28 @@ import styles from './Node.module.scss';
 interface Props {
     treeData: TreeData;
     parentFullName?: string;
-    orderDirection?: ArrowDirection;
+    orderUp?: boolean;
+    orderDown?: boolean;
 }
 
 const getOrderDirection = (subNodesLength: number, nodeIndex: number) => {
-    if (subNodesLength > 1 && nodeIndex === 0) {
-        return ArrowDirection.Down;
-    }
+    if (subNodesLength > 1) {
+        if (nodeIndex === 0) {
+            return {
+                orderDown: true,
+            };
+        }
 
-    if (subNodesLength > 1 && nodeIndex > 0) {
-        return ArrowDirection.Up;
+        if (nodeIndex === subNodesLength - 1) {
+            return {
+                orderUp: true,
+            };
+        }
+
+        return {
+            orderDown: true,
+            orderUp: true,
+        };
     }
 
     return undefined;
@@ -31,7 +43,8 @@ const Node: React.FC<Props> = (props) => {
     const {
         treeData: { fullName, email, subNodes },
         parentFullName,
-        orderDirection,
+        orderUp,
+        orderDown,
     } = props;
 
     const dispatch = useDispatch();
@@ -40,8 +53,13 @@ const Node: React.FC<Props> = (props) => {
         dispatch(onDeleteNode(fullName));
     };
 
-    const onClickOrder = () => {
-        dispatch(onOrderNode(fullName));
+    const onClickOrder = (direction: ArrowDirection) => {
+        dispatch(
+            onOrderNode(
+                fullName,
+                direction === ArrowDirection.Up ? OrderDirection.Up : OrderDirection.Down,
+            ),
+        );
     };
 
     return (
@@ -58,19 +76,18 @@ const Node: React.FC<Props> = (props) => {
                         <Typography text={parentFullName} />
                     </div>
                 )}
-                <div className={orderDirection ? styles.marginRight : undefined}>
+                <div className={orderUp || orderDown ? styles.marginRight : undefined}>
                     <DeleteIcon onClick={onClickDelete} />
                 </div>
-                {(orderDirection || orderDirection === ArrowDirection.Up) && (
-                    <Arrow direction={orderDirection} onClick={onClickOrder} />
-                )}
+                {orderDown && <Arrow direction={ArrowDirection.Down} onClick={onClickOrder} />}
+                {orderUp && <Arrow direction={ArrowDirection.Up} onClick={onClickOrder} />}
             </div>
             {subNodes?.map((node, index) => (
                 <Node
                     key={index}
                     treeData={node}
                     parentFullName={fullName}
-                    orderDirection={getOrderDirection(subNodes.length, index)}
+                    {...getOrderDirection(subNodes.length, index)}
                 />
             ))}
         </div>

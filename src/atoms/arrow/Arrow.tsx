@@ -12,16 +12,20 @@ export enum ArrowDirection {
 
 interface Props {
     direction?: ArrowDirection;
-    onClick: () => void;
+    onClick: (direction: ArrowDirection) => void;
 }
 
 const Arrow: React.FC<Props> = (props) => {
     const { direction = ArrowDirection.Up, onClick } = props;
 
+    const onArrowClick = () => {
+        onClick(direction);
+    };
+
     return (
         <img
             className={classnames(styles.image, styles[direction])}
-            onClick={onClick}
+            onClick={onArrowClick}
             src={ArrowIcon}
             alt="arrow"
         />
