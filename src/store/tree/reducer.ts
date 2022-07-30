@@ -1,10 +1,10 @@
 import { DELETE_NODE, INITIAL_STATE, ORDER_NODE, SET_NODE } from './constants';
 import { DeleteNodeAction, OrderNodeAction, SetNodeAction, TreeAction, TreeData } from './types';
 import {
-    deleteParentNode,
-    deleteTreeNode,
+    getOrderedTreeData,
+    getTreeDataWithDeletedNode,
+    getTreeDataWithDeletedParent,
     insertNodeToParent,
-    orderTreeNode,
 } from '../../utils/tree';
 import * as R from 'ramda';
 
@@ -28,7 +28,7 @@ export function treeReducer(state: TreeState | null = initialState, action: Tree
             const fullName = (action as DeleteNodeAction).payload;
 
             if (state) {
-                const result = deleteParentNode(state, fullName);
+                const result = getTreeDataWithDeletedParent(state, fullName);
 
                 if (result || result === null) {
                     return result;
@@ -37,7 +37,7 @@ export function treeReducer(state: TreeState | null = initialState, action: Tree
                 if (state?.subNodes?.length) {
                     return {
                         ...state,
-                        subNodes: deleteTreeNode(state.subNodes, fullName),
+                        subNodes: getTreeDataWithDeletedNode(state.subNodes, fullName),
                     };
                 }
             }
@@ -50,7 +50,7 @@ export function treeReducer(state: TreeState | null = initialState, action: Tree
             if (state && state?.subNodes?.length) {
                 return {
                     ...state,
-                    subNodes: orderTreeNode(
+                    subNodes: getOrderedTreeData(
                         state.subNodes,
                         payload.fullName,
                         payload.orderDirection,

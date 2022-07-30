@@ -46,7 +46,7 @@ export const insertNodeToParent = (treeData: TreeData, node: NodeForInsertion): 
     return false;
 };
 
-export const deleteParentNode = (
+export const getTreeDataWithDeletedParent = (
     treeData: TreeData,
     fullName: string,
 ): TreeData | null | boolean => {
@@ -69,7 +69,7 @@ export const deleteParentNode = (
     return false;
 };
 
-export const deleteTreeNode = (treeData: TreeData[], fullName: string): TreeData[] => {
+export const getTreeDataWithDeletedNode = (treeData: TreeData[], fullName: string): TreeData[] => {
     let data: TreeData[] = [...treeData];
 
     if (data.find((node) => node.fullName === fullName)) {
@@ -94,7 +94,7 @@ export const deleteTreeNode = (treeData: TreeData[], fullName: string): TreeData
         if (node.subNodes?.length) {
             return {
                 ...node,
-                subNodes: deleteTreeNode(node.subNodes, fullName),
+                subNodes: getTreeDataWithDeletedNode(node.subNodes, fullName),
             };
         }
 
@@ -104,7 +104,7 @@ export const deleteTreeNode = (treeData: TreeData[], fullName: string): TreeData
     });
 };
 
-export const orderTreeNode = (
+export const getOrderedTreeData = (
     treeData: Array<TreeData>,
     fullName: string,
     orderDirection: OrderDirection,
@@ -124,7 +124,7 @@ export const orderTreeNode = (
         if (node.subNodes?.length) {
             return {
                 ...node,
-                subNodes: orderTreeNode(node.subNodes, fullName, orderDirection),
+                subNodes: getOrderedTreeData(node.subNodes, fullName, orderDirection),
             };
         }
 
