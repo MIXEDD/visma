@@ -178,7 +178,7 @@ describe('Tree', () => {
         });
     });
 
-    it('getTreeDataWithDeletedParent: Should return tree data with deleted parent', () => {
+    it('getTreeDataWithDeletedParent: Should return tree data with deleted parent or false if parent is not found', () => {
         expect(tree.getTreeDataWithDeletedParent(treeData, 'Penelope Randi')).toStrictEqual({
             fullName: 'Andre Martina',
             email: 'andre.martina@example.com',
