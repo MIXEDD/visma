@@ -40,12 +40,16 @@ export const getTreeDataWithInsertedNode = (
         ];
     }
 
-    return {
-        ...data,
-        subNodes: data?.subNodes?.map((subNode) => {
-            return getTreeDataWithInsertedNode(subNode, node);
-        }),
-    };
+    if (data.subNodes?.length) {
+        return {
+            ...data,
+            subNodes: data?.subNodes?.map((subNode) => {
+                return getTreeDataWithInsertedNode(subNode, node);
+            }),
+        };
+    }
+
+    return data;
 };
 
 export const getTreeDataWithDeletedParent = (
