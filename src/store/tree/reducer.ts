@@ -4,9 +4,8 @@ import {
     getOrderedTreeData,
     getTreeDataWithDeletedNode,
     getTreeDataWithDeletedParent,
-    insertNodeToParent,
+    getTreeDataWithInsertedNode,
 } from '../../utils/tree';
-import * as R from 'ramda';
 
 export interface TreeState extends TreeData {}
 
@@ -15,11 +14,8 @@ const initialState: TreeState = INITIAL_STATE;
 export function treeReducer(state: TreeState | null = initialState, action: TreeAction) {
     switch (action.type) {
         case SET_NODE: {
-            if (state) {
-                const clonedTreeState = R.clone(state);
-                insertNodeToParent(clonedTreeState, (action as SetNodeAction).payload);
-
-                return clonedTreeState;
+            if (state && state.subNodes) {
+                return getTreeDataWithInsertedNode(state, (action as SetNodeAction).payload);
             }
 
             return state;

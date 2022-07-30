@@ -22,28 +22,30 @@ export const getTreeNodes = (treeData: TreeData): Array<{ value: string; label: 
 
 export const isTreeFull = (treeData: TreeData) => getTreeNodes(treeData).length > MAX_NODES_COUNT;
 
-export const insertNodeToParent = (treeData: TreeData, node: NodeForInsertion): boolean => {
-    if (treeData.fullName === node.coach) {
-        treeData.subNodes = [
-            ...(treeData.subNodes || []),
+export const getTreeDataWithInsertedNode = (
+    treeData: TreeData,
+    node: NodeForInsertion,
+): TreeData => {
+    let data: TreeData = {
+        ...treeData,
+    };
+
+    if (data.fullName === node.coach) {
+        data.subNodes = [
+            ...(data.subNodes || []),
             {
                 fullName: node.fullName,
                 email: node.email,
             },
         ];
-
-        return true;
     }
 
-    if (treeData.subNodes) {
-        for (const element of treeData.subNodes) {
-            if (insertNodeToParent(element, node)) {
-                return true;
-            }
-        }
-    }
-
-    return false;
+    return {
+        ...data,
+        subNodes: data?.subNodes?.map((subNode) => {
+            return getTreeDataWithInsertedNode(subNode, node);
+        }),
+    };
 };
 
 export const getTreeDataWithDeletedParent = (
@@ -113,11 +115,11 @@ export const getOrderedTreeData = (
     let data: TreeData[] = [...treeData];
 
     if (orderDirection === OrderDirection.Up && indexOfNode >= 0) {
-        data = R.move(indexOfNode, indexOfNode - 1, treeData);
+        data = R.move(indexOfNode, indexOfNode - 1, data);
     }
 
     if (orderDirection === OrderDirection.Down && indexOfNode >= 0) {
-        data = R.move(indexOfNode, indexOfNode + 1, treeData);
+        data = R.move(indexOfNode, indexOfNode + 1, data);
     }
 
     return data.map((node) => {
