@@ -79,7 +79,11 @@ const Node: React.FC<Props> = (props) => {
                 <div className={orderUp || orderDown ? styles.marginRight : undefined}>
                     <DeleteIcon onClick={onClickDelete} />
                 </div>
-                {orderDown && <Arrow direction={ArrowDirection.Down} onClick={onClickOrder} />}
+                {orderDown && (
+                    <div className={orderUp ? styles.marginRight : undefined}>
+                        <Arrow direction={ArrowDirection.Down} onClick={onClickOrder} />
+                    </div>
+                )}
                 {orderUp && <Arrow direction={ArrowDirection.Up} onClick={onClickOrder} />}
             </div>
             {subNodes?.map((node, index) => (
