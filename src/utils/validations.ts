@@ -45,7 +45,7 @@ export const isFullNameStartsWithCapitalLetter = (value: string): string | boole
 export const isFullNameUnique =
     (treeData: TreeData) =>
     (value: string): string | boolean => {
-        if (treeData.fullName === value) {
+        if (treeData.fullName === value.trim().split(' ').filter(Boolean).join(' ')) {
             return 'Such full name already exists';
         }
 
@@ -78,7 +78,7 @@ export const isEmailValid =
             }
         });
 
-        if (email !== emailValue) {
+        if (email !== emailValue.trim()) {
             return 'Email is of incorrect format';
         }
 
