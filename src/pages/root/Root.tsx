@@ -6,7 +6,7 @@ import { ROUTES } from '../../constants';
 import InputField from '../../atoms/input-field/InputField';
 import Typography, { ElementType } from '../../atoms/typography/Typography';
 import Button from '../../atoms/button/Button';
-import { formatSpecialCharactersAndNumbers } from '../../utils/format';
+import { formatCharactersAndNumbersAndSpaces, formatTrim } from '../../utils/format';
 import {
     getValidationErrors,
     isCorrectFullNameLength,
@@ -123,13 +123,14 @@ const Root: React.FC = () => {
                 label="Full name*:"
                 value={fullName}
                 onChangeInput={onChangeFullName}
-                format={formatSpecialCharactersAndNumbers}
+                format={formatCharactersAndNumbersAndSpaces}
                 errors={fullNameErrors}
             />
             <InputField
                 label="Email*:"
                 value={email}
                 onChangeInput={onSetEmail}
+                format={formatTrim}
                 errors={emailErrors}
             />
             <Selector

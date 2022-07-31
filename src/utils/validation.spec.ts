@@ -69,6 +69,9 @@ describe('Validations', () => {
             'Full name can only be no more than four words',
         );
         expect(validations.isFullNameNoMoreThanFourWords('   Test Test Test Test   ')).toBeTruthy();
+        expect(validations.isCorrectFullNameLength('   2     3   ')).toEqual(
+            'Length must be between 3 and 64 characters',
+        );
     });
 
     it('isFullNameStartsWithCapitalLetter: Should check if all values start with capital letter', () => {
@@ -93,6 +96,9 @@ describe('Validations', () => {
         expect(validations.isFullNameUnique(treeData)('Janvier Inara InI')).toEqual(
             'Such full name already exists',
         );
+        expect(validations.isFullNameUnique(treeData)('   Janvier Inara InI   ')).toEqual(
+            'Such full name already exists',
+        );
     });
 
     it('isEmailValid: Should check if email is valid', () => {
@@ -102,6 +108,11 @@ describe('Validations', () => {
         );
         expect(
             validations.isEmailValid('Test    Test     Test')('test.test.test@example.com'),
+        ).toBeTruthy();
+        expect(
+            validations.isEmailValid('   Test    Test     Test   ')(
+                '   test.test.test@example.com   ',
+            ),
         ).toBeTruthy();
     });
 

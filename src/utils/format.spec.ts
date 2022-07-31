@@ -8,4 +8,18 @@ describe('Format', () => {
             'TEST',
         );
     });
+
+    it('formatTrim: Should trim spaces', () => {
+        expect(format.formatTrim('  test  ')).toEqual('test');
+    });
+
+    it('formatMultipleSpaces: Should remove multiple spaces', () => {
+        expect(format.formatMultipleSpaces('  te   s   t  ')).toEqual(' te s t ');
+    });
+
+    it('formatCharactersAndNumbersAndSpaces: Should remove special characters, number, multiple spaces', () => {
+        expect(
+            format.formatCharactersAndNumbersAndSpaces('T!@#$%^&*E    ()_+-=12S345     6789T0'),
+        ).toEqual('TE S T');
+    });
 });
